@@ -45,7 +45,9 @@ How to get access to the UI ?
 | **Setting**       | `mlflow.set_tracking_uri` or `MLFLOW_TRACKING_URI`    | `mlflow.set_registry_uri` or `MLFLOW_REGISTRY_URI`    |                                                       |
 
 
-    - The main difference between tracking URI and registry URI is that the registry URI is only required if we want to use the model registry features, such as registering models and transitioning stages. The model registry allows the management of the full lifecycle of MLflow models. If we do not use the model registry, we would only need to set the tracking URI.
+
+
+- The main difference between tracking URI and registry URI is that the registry URI is only required if we want to use the model registry features, such as registering models and transitioning stages. The model registry allows the management of the full lifecycle of MLflow models. If we do not use the model registry, we would only need to set the tracking URI.
 
 
 ## SQLite
