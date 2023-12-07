@@ -6,6 +6,7 @@ Few things to know about MLOps
 - Metrics and parameters logging
 - Model lifecycle management
 - Models artefact
+- Model Registry
 - ... and more
 
 ## References

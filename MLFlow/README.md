@@ -37,6 +37,21 @@ How to get access to the UI ?
 
 ### Misc
 
+| Concept          | Purpose                                                   | Usage                                                                                               | Setting                                         |
+|------------------|-----------------------------------------------------------|-----------------------------------------------------------------------------------------------------|-------------------------------------------------|
+| Tracking URI     | Stores experiment and run metadata                        | Can be HTTP/HTTPS URI, database connection string, or local path                                     | `mlflow.set_tracking_uri`<br>or<br>`MLFLOW_TRACKING_URI` |
+| Registry URI     | Stores registered models and model versions               | Can be the same as tracking URI or a different location supporting the same backend store types    | `mlflow.set_registry_uri`<br>or<br>`MLFLOW_REGISTRY_URI` |
+| Difference       | Registry URI is required for model registry features      | If not using the model registry, only tracking URI needs to be set                                   |                                                 |
+
+|                   | Tracking URI                                          | Registry URI                                          | Difference                                           |
+|-------------------|-------------------------------------------------------|-------------------------------------------------------|-------------------------------------------------------|
+| **Purpose**       | Stores experiment and run metadata                    | Stores registered models and model versions           | Registry URI is required for model registry features  |
+| **Usage**         | Can be HTTP/HTTPS URI, database connection string, or local path | Can be the same as tracking URI or a different location supporting the same backend store types    | If not using the model registry, only tracking URI needs to be set |
+| **Setting**       | `mlflow.set_tracking_uri` or `MLFLOW_TRACKING_URI`    | `mlflow.set_registry_uri` or `MLFLOW_REGISTRY_URI`    |                                                       |
+
+
+
+
 - *"The difference between tracking URI and registry URI in MLflow is that they are used for different purposes and point to different locations.
 The tracking URI is the location where MLflow stores experiment and run metadata, such as parameters, metrics, and tags. 
 The tracking URI can be a HTTP/HTTPS URI for a remote server, a database connection string, or a local path to log data to a directory. 
