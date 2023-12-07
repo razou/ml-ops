@@ -35,37 +35,17 @@ How to get access to the UI ?
 - Local artefacts storage (e.g. runs logged into a local `mlruns` directory): run `mlflow ui` command in the directory above it and go to the `http://localhost:5000/` url
 - Remote artefacts storage: Go to `http://<ip address of your MLflow tracking server>:5000` url 
 
-### Misc
+### Recap
 
-| Concept          | Purpose                                                   | Usage                                                                                               | Setting                                         |
-|------------------|-----------------------------------------------------------|-----------------------------------------------------------------------------------------------------|-------------------------------------------------|
-| Tracking URI     | Stores experiment and run metadata                        | Can be HTTP/HTTPS URI, database connection string, or local path                                     | `mlflow.set_tracking_uri`<br>or<br>`MLFLOW_TRACKING_URI` |
-| Registry URI     | Stores registered models and model versions               | Can be the same as tracking URI or a different location supporting the same backend store types    | `mlflow.set_registry_uri`<br>or<br>`MLFLOW_REGISTRY_URI` |
-| Difference       | Registry URI is required for model registry features      | If not using the model registry, only tracking URI needs to be set                                   |                                                 |
 
 |                   | Tracking URI                                          | Registry URI                                          | Difference                                           |
 |-------------------|-------------------------------------------------------|-------------------------------------------------------|-------------------------------------------------------|
-| **Purpose**       | Stores experiment and run metadata                    | Stores registered models and model versions           | Registry URI is required for model registry features  |
+| **Purpose**       | Stores experiment and run metadata (e.g., parameters, metrics, tags)                    | Stores registered models and model versions           | Registry URI is required for model registry features  |
 | **Usage**         | Can be HTTP/HTTPS URI, database connection string, or local path | Can be the same as tracking URI or a different location supporting the same backend store types    | If not using the model registry, only tracking URI needs to be set |
 | **Setting**       | `mlflow.set_tracking_uri` or `MLFLOW_TRACKING_URI`    | `mlflow.set_registry_uri` or `MLFLOW_REGISTRY_URI`    |                                                       |
 
 
-
-
-- *"The difference between tracking URI and registry URI in MLflow is that they are used for different purposes and point to different locations.
-The tracking URI is the location where MLflow stores experiment and run metadata, such as parameters, metrics, and tags. 
-The tracking URI can be a HTTP/HTTPS URI for a remote server, a database connection string, or a local path to log data to a directory. 
-You can set the tracking URI using the mlflow.set_tracking_uri function or the MLFLOW_TRACKING_URI environment variable."*
-
-
-- *"The registry URI is the location where MLflow stores registered models and model versions. 
-The registry URI can be the same as the tracking URI, or a different location that supports the same backend store types as the tracking URI. 
-You can set the registry URI using the mlflow.set_registry_uri function or the MLFLOW_REGISTRY_URI environment variable."*
-
-
-- *"The main difference between tracking URI and registry URI is that the registry URI is only required if you want to use the model registry features, such as registering models and transitioning stages. 
-The model registry allows you to manage the full lifecycle of MLflow models. 
-If you do not use the model registry, you only need to set the tracking URI."*
+    - The main difference between tracking URI and registry URI is that the registry URI is only required if we want to use the model registry features, such as registering models and transitioning stages. The model registry allows the management of the full lifecycle of MLflow models. If we do not use the model registry, we would only need to set the tracking URI.
 
 
 ## SQLite
