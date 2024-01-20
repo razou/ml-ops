@@ -111,3 +111,11 @@ python train_1.py --alpha 1 l1-ratio 1 --intercept true --max-iter 100
 ```python
 python train_1.py --alpha 1 l1-ratio 0.5 --intercept true --max-iter 100
 ```
+
+
+## Some MLFlow Alternatives
+- weights and biases: https://docs.wandb.ai/
+- neptune.ai: https://neptune.ai/
+- Comparison between `wandb` vs `mlflow` vs `neptune.ai`
+  - https://neptune.ai/vs/wandb-mlflow
+  - https://shorturl.at/tuIWZ
