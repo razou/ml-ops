@@ -18,7 +18,8 @@ np.random.seed(40)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-ROOT_DIR = pathlib.Path(__file__).parent.resolve()
+ROOT_DIR = pathlib.Path(__file__).parent.parent.resolve()
+DATA_DIR = os.path.join(ROOT_DIR, "Data")
 TARGET_VAR = "Outcome"
 TRACKING_URI = "http://localhost:5000"
 
@@ -46,7 +47,7 @@ def eval_metrics(actual, pred):
 
 
 def main(args):
-    data_path = os.path.join(ROOT_DIR, args.data)
+    data_path = os.path.join(DATA_DIR, args.data)
     alpha = args.alpha
     l1_ratio = args.l1
     max_iter = args.max_iter
