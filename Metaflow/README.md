@@ -73,14 +73,11 @@ if __name__ == "__main__":
 ## Examples 
 When we run a Flow, Metaflow automatically create `.metaflow` directory under current working directory. This directory contains runs, Flows and artefacts.
 
-
-### Example 1
-In this first example, wa aim to train ElasticNet classifier to predict diabetics.
-
-- Run `python lr_flow.py run --help` command for details and brief summary
-- Run `python lr_flow.py show` command to see the Flow  (graph)
-- Run `python lr_flow.py run` to run the example with basic and default parameters
-- Run `python lr_flow.py run --alpha 0.02 --max-iter 300` to change default parameters values (i.e., for `alpha` and `max-iter`)
+- Train ElasticNet classifier to predict diabetics.
+  - Run `python lr_flow.py run --help` command for details and brief summary
+  - Run `python lr_flow.py show` command to see the Flow  (graph)
+  - Run `python lr_flow.py run` to run the example with basic and default parameters
+  - Run `python lr_flow.py run --alpha 0.02 --max-iter 300` to change default parameters values (i.e., for `alpha` and `max-iter`)
 
 
 
