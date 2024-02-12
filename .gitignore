@@ -133,6 +133,7 @@ mlflow-env/
 ENV/
 env.bak/
 venv.bak/
+venv_mlops/
 
 # Spyder project settings
 .spyderproject
@@ -168,3 +169,8 @@ cython_debug/
 #
 
 *.out
+
+# Metaflow
+Metaflow/metaflow-tutorials/
+/Metaflow/.metaflow/
+/Metaflow/metaflow_card_cache/
