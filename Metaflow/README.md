@@ -79,12 +79,28 @@ When we run a Flow, Metaflow automatically create `.metaflow` directory under cu
   - Run `python lr_flow.py run` to run the example with basic and default parameters
   - Run `python lr_flow.py run --alpha 0.02 --max-iter 300` to change default parameters values (i.e., for `alpha` and `max-iter`)
 
-### Example 2: Train multiple classifiers models in parallel Using `branching flow`
-- Run `python multi_models_in_parallel_flow.py run --help` command for details and help
-- Run `python multi_models_in_parallel_flow.py run` command to test the script
+### Example 2: Parallel processing
+End-to-End model training and deployment.
+- Train multiple classifiers models in parallel Using `branching flow`
+  - Run `python parallel_processing.py run --help` command for details and help
+  - Run `python parallel_processing.py run` command to test the script
+- Online prediction using best model
+  - Run server: `uvicorn server:api --reload`
+    - Or alternatively we may run the command in background to be able to use the same terminal for other tasks `nohup uvicorn server:api --reload &` 
+      - The usage of `nohup` command will redirect outputs and logs to a file named `nohup.out` (by default) located in the current directory.
+  - Then use either the `server_request.py` script or the server endpoint `http://127.0.0.1:8000/predict` to make predictions.
 
 ## Visualisation
-
+### Metaflow UI
+- Powerful tool that enables:
+  * Real time monitoring
+  * Workflow visualisation
+  * Get access to execution details (parameters, artefacts, logs, ...)
+  * Metadata tracking
+  * Local deployment for testing and debugging purposes
+  * ...
+- Setup and install
+  - `https://github.com/Netflix/metaflow-ui`
 
 ### Cards
 - Help to

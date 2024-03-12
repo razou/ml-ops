@@ -8,7 +8,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.model_selection import cross_val_score
 
-from metaflow import FlowSpec, step, Parameter
+from metaflow import FlowSpec, step, Parameter, Flow, current
 
 warnings.filterwarnings("ignore")
 
@@ -31,6 +31,8 @@ class ClassifiersFlow(FlowSpec):
     num_folds = Parameter(name="num_folds", type=int, default=10, help="Number of folds for cross validation")
     learning_rate = Parameter(name='learning_rate', type=float, default=0.1, help='Learning rate')
     max_iter = Parameter(name='max_iter', type=int, default=200, help='Number of iterations')
+    model_tag = Parameter(name="model_tag", type=str, default="test_candidate",
+                          help="Adding ability to retrieve models by tag")
 
     def computes_scores(self, model):
         scores = cross_val_score(estimator=model,
@@ -60,8 +62,8 @@ class ClassifiersFlow(FlowSpec):
     def train_lr(self):
         logger.info("Training Logistic Regression model ...")
         self.model_name = "Logistic Regression"
-        self.lr = LogisticRegression(max_iter=self.max_iter, random_state=self.random_state)
-        self.scores = self.computes_scores(model=self.lr)
+        self.clf = LogisticRegression(max_iter=self.max_iter, random_state=self.random_state)
+        self.scores = self.computes_scores(model=self.clf)
         logger.info(f"LR scores: {np.round(np.mean(self.scores), 5)}")
         self.next(self.eval_perf)
 
@@ -69,11 +71,11 @@ class ClassifiersFlow(FlowSpec):
     def train_rf(self):
         logger.info("Training Random Forest model ...")
         self.model_name = "Random Forest"
-        self.rf = RandomForestClassifier(
+        self.clf = RandomForestClassifier(
             n_estimators=self.n_estimators,
             max_depth=self.max_depth,
             random_state=self.random_state)
-        self.scores = self.computes_scores(model=self.rf)
+        self.scores = self.computes_scores(model=self.clf)
         logger.info(f"RF scores: {np.round(np.mean(self.scores), 5)}")
         self.next(self.eval_perf)
 
@@ -82,34 +84,47 @@ class ClassifiersFlow(FlowSpec):
         logger.info("Training Gradient Boosted Tree model ...")
         self.model_name = "Gradient Boosted Tree"
 
-        self.gbt = GradientBoostingClassifier(
+        self.clf = GradientBoostingClassifier(
             n_estimators=self.n_estimators,
             learning_rate=self.learning_rate,
             random_state=self.random_state)
 
-        self.scores = self.computes_scores(model=self.gbt)
+        self.scores = self.computes_scores(model=self.clf)
         logger.info(f"GBT scores: {np.round(np.mean(self.scores), 5)}")
         self.next(self.eval_perf)
 
     @step
-    def eval_perf(self, modeling_tasks):
+    def eval_perf(self, models):
+        plus_minus = "\u00B1"
+
         self.scores = [
-            (model.model_name,
-             np.mean(model.scores),
-             np.std(model.scores))
-            for model in modeling_tasks
+            (
+                model.model_name,
+                np.round(np.mean(model.scores), 3),
+                np.round(np.std(model.scores), 3)
+            )
+            for model in models
         ]
+        logger.info(f"Model performances ({self.eval_metric} score):")
+        for name, avg_perf_score, std_perf_score in self.scores:
+            logger.info(f"  {name}: {avg_perf_score} {plus_minus} {std_perf_score}")
+
+        self.best_classifier_model = max(models, key=lambda item: np.mean(item.scores)).clf
+
+        self.df = pd.read_csv(os.path.join(DATA_DIR, str(self.data)))
+
+        logger.info("Fit and save best model")
+        self.best_classifier_model.fit(
+            X=self.df.drop([TARGET_VAR], axis=1),
+            y=self.df[[TARGET_VAR]]
+        )
         self.next(self.end)
 
     @step
     def end(self):
-        self.results = []
-        plus_minus = "\u00B1"
-
-        logger.info(f"Model performances ({self.eval_metric} score):")
-        for name, avg_perf_score, std_perf_score in self.scores:
-            self.results.append((name, avg_perf_score, std_perf_score))
-            logger.info(f"  {name}: {np.round(avg_perf_score, 3)} {plus_minus} {np.round(std_perf_score, 3)}")
+        logger.info(f"Tag best model as '{self.model_tag}'")
+        run = Flow(current.flow_name)[current.run_id]
+        run.add_tag(self.model_tag)
 
 
 if __name__ == "__main__":
